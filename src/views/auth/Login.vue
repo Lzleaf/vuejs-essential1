@@ -1,7 +1,6 @@
 <template>
   <div class="row">
     <div class="col-md-4 col-md-offset-4 floating-box">
-      <Message :show.sync="msgShow" :type="msgType" :msg="msg"/>
 
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -34,9 +33,6 @@
       return {
         username: '', // 用户名
         password: '', // 密码
-        msg: '', // 消息
-        msgType: '', // 消息类型
-        msgShow: false // 是否显示消息，默认不显示
       }
     },
     methods: {
@@ -58,23 +54,14 @@
 
         if (localUser) {
           if (localUser.name !== user.name || localUser.password !== user.password) {
-            this.showMsg('用户名或密码不正确')
+            this.$message.showMsg('用户名或密码不正确', 'warning')
           } else {
             this.$store.dispatch('login')
           }
         } else {
-          this.showMsg('不存在该用户')
+          this.$message.show('不存在该用户', 'warning')
         }
       },
-      showMsg(msg, type = 'warning') {
-        this.msg = msg
-        this.msgType = type
-        this.msgShow = false
-
-        this.$nextTick(() => {
-          this.msgShow = true
-        })
-      }
     }
   }
 </script>

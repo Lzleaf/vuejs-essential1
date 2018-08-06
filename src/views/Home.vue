@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Message :show.sync="msgShow" :type="msgType" :msg="msg"/>
   </div>
 </template>
 
@@ -22,14 +21,14 @@
         if (vm.$store.state.auth) {
           switch (fromName) {
             case 'Register':
-              vm.showMsg('注册成功')
+              vm.$message.show('注册成功')
               break
             case 'Login':
-              vm.showMsg('登录成功')
+              vm.$message.show('登录成功')
               break
           }
         } else if (logout) {
-          vm.showMsg('操作成功')
+          vm.$message.show('操作成功')
         }
       })
     },
@@ -42,18 +41,10 @@
     watch: {
       auth(value) {
         if (!value) {
-          this.showMsg('操作成功')
+          this.$message.show('操作成功')
         }
       }
     },
-
-    methods: {
-      showMsg(msg, type = 'success') {
-        this.msg = msg
-        this.msgType = type
-        this.msgShow = true
-      }
-    }
   }
 </script>
 
