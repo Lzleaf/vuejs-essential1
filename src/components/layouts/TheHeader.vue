@@ -9,10 +9,10 @@
           <span class="icon-bar"></span>
         </button>
 
-        <a href="/" class="navbar-brand">
+        <router-link to="/" class="navbar-brand">
           <span class="title">{{ logo.title }}</span>
           <img :src="logo.src" :alt="logo.title">
-        </a>
+        </router-link>
       </div>
 
       <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
@@ -21,14 +21,23 @@
             <a href="#" @click="changeNavIndex(index)">{{ item }}</a>
           </li>
         </ul>
+
+        <div class="navbar-right">
+          <the-entry></the-entry>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import TheEntry from '@/components/layouts/TheEntry'
+
   export default {
     name: 'TheHeader',
+    components: {
+      TheEntry
+    },
     data() {
       return {
         logo: {
@@ -44,7 +53,7 @@
       this.uploadsUrl = 'https://vuejscaffcdn.phphub.org/uploads/'
     },
     methods: {
-      changeNavIndex(index){
+      changeNavIndex(index) {
         this.activeNavIndex = index;
       },
       toggleNav() {
@@ -56,6 +65,11 @@
 
 <!--scoped：添加此属性，则样式只在当前组件起作用-->
 <style scoped>
-  .title { display: none; }
-  .navbar-default .navbar-nav > .active > a { background: rgba(0,0,0,.03);}
+  .title {
+    display: none;
+  }
+
+  .navbar-default .navbar-nav > .active > a {
+    background: rgba(0, 0, 0, .03);
+  }
 </style>
