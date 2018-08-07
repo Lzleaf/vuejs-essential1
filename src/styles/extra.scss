@@ -41,3 +41,6 @@ i.avatar,.align-middle {vertical-align: middle;}
 .payment-qrcode h5 {margin:1.5em 0;}
 html.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: visible; height: 100%;}
 body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: hidden; height: 100%;}
+
+div .editor-preview pre { background: #333;}
+div .editor-preview pre code[class*="language-"] { color: #eee;}
