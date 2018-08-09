@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import Message from './Message'
 import Modal from './Modal'
+import Pagination from './Pagination'
+import Slider from './Slider.vue'
 
 const components = {
   Message,
-  Modal
+  Modal,
+  Pagination,
+  Slider
 }
 
 for (const [key, value] of Object.entries(components)) {

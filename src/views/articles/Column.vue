@@ -3,7 +3,7 @@
     <div class="blog-pages">
       <router-view/>
 
-      <div v-if="auth" class="col-md-3 main-col pull-left">
+      <div class="col-md-3 main-col pull-left">
         <div class="panel panel-default corner-radius">
           <div class="panel-body text-center topic-author-box blog-info">
             <div class="image blog-cover">
@@ -31,20 +31,57 @@
 
   export default {
     name: 'Column',
+    data(){
+      return {
+        userName: '',
+        userAvatar: '',
+        articles: []
+      }
+    },
     computed: {
       ...mapState([
-        'auth',
-        'user',
-        'articles'
+        'user'
       ]),
-      userName() {
-        return this.user && this.user.name
-      },
-      userAvatar() {
-        return this.user && this.user.avatar
-      },
       articleNum() {
         return this.articles ? this.articles.length : 0
+      }
+    },
+    beforeRouteEnter(to, from, next) {
+      next(vm => {
+        vm.setDataByParams(to.params)
+      })
+    },
+    watch: {
+      '$route'(to) {
+        this.setDataByParams(to.params)
+      }
+    },
+    methods: {
+      setDataByParams(params) {
+        const user = params.user
+        const articleId = params.articleId
+
+        const article = this.$store.getters.getArticleById(articleId)
+
+        if(article){
+          this.userName = article.uname
+          this.userAvatar = article.uavatar
+          this.articles = this.$store.getters.getArticlesByUid(null, article.uname)
+        }else if(user){
+          const articles = this.$store.getters.getArticlesByUid(null, user)
+
+          // 存在至少一篇用户文章时，设置用户数据为第一篇文章的用户信息
+          if (articles.length) {
+            this.userName = articles[0].uname
+            this.userAvatar = articles[0].uavatar
+          } else if (this.user) {
+            // 不存在用户文章时，设置用户数据为当前用户的用户信息
+            this.userName = this.user.name
+            this.userAvatar = this.user.avatar
+          }
+
+          this.articles = articles
+        }
       }
     }
   }

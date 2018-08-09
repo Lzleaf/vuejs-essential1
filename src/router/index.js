@@ -8,6 +8,15 @@ Vue.use(Router)
 const router = new Router({
   mode: 'history',
   linkExactActiveClass: 'active',
+  scrollBehavior(to, from, savedPosition){
+    if(to.hash){
+      return {selector: to.hash }
+    } else if(savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  },
   routes
 })
 
@@ -17,12 +26,17 @@ router.beforeEach((to, from, next) => {
   const auth = store.state.auth
   const articleId = to.params.articleId
 
+  const user = store.state.user && store.state.user.name
+  // 路由参数中的用户
+  const paramUser = to.params.user
+
   app.$message.hide()
 
   if (
     (auth && to.path.indexOf('/auth/') !== -1) ||
     (!auth && to.meta.auth) ||
-    (articleId && !store.getters.getArticleById(articleId))
+    (articleId && !store.getters.getArticleById(articleId)) ||
+    (paramUser && paramUser !== user && !store.getters.getArticlesByUid(null, paramUser).length)
   ) {
     next('/')
   } else {
